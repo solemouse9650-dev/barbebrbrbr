@@ -479,11 +479,12 @@
         }
 
         .horario-btn.ocupado {
-            background-color: var(--medium-gray);
-            color: var(--dark-gray);
-            cursor: not-allowed;
-            border-color: var(--medium-gray);
-        }
+    background-color: #000;
+    color: #fff;
+    cursor: not-allowed;
+    border-color: #000;
+    opacity: 0.7;
+}
 
         .horario-btn.seleccionado {
             background-color: var(--primary-black);
@@ -1128,8 +1129,11 @@
                 reservasData[dia].horarios.forEach(horario => {
                     const btn = document.createElement('button');
                     btn.className = 'horario-btn';
-                    btn.textContent = horario;
-                    if (reservasData[dia].ocupados && reservasData[dia].ocupados.includes(horario)) {
+if (reservasData[dia].ocupados.includes(horario)) {
+    btn.textContent = horario + " (Reservado)";
+} else {
+    btn.textContent = horario;
+}                    if (reservasData[dia].ocupados && reservasData[dia].ocupados.includes(horario)) {
                         btn.classList.add('ocupado');
                         btn.disabled = true;
                     } else {
@@ -1186,7 +1190,48 @@
 
             if (database) {
                 const nuevosOcupados = [...(reservasData[diaSeleccionado].ocupados || []), horaSeleccionada];
-                database.ref(`reservas/${diaSeleccionado}/ocupados`).set(nuevosOcupados)
+               const ref = database.ref(`reservas/${diaSeleccionado}/ocupados`);
+
+ref.transaction((ocupadosActuales) => {
+    if (ocupadosActuales === null) {
+        ocupadosActuales = [];
+    }
+
+    // ❌ Si ya está ocupado → cancelar
+    if (ocupadosActuales.includes(horaSeleccionada)) {
+        return; // cancela la operación
+    }
+
+    // ✅ Si está libre → agregar
+    ocupadosActuales.push(horaSeleccionada);
+    return ocupadosActuales;
+}, (error, committed) => {
+    const msg = document.getElementById('mensajeReserva');
+
+    if (error) {
+        msg.className = 'mensaje-reserva error';
+        msg.textContent = '❌ Error al reservar';
+        msg.style.display = 'block';
+
+    } else if (!committed) {
+        // 🔴 YA ESTABA RESERVADO
+        msg.className = 'mensaje-reserva error';
+        msg.textContent = '⚠️ Este horario ya está reservado';
+        msg.style.display = 'block';
+
+    } else {
+        // ✅ RESERVA OK
+        database.ref('reservas_clientes').push({
+            nombre,
+            telefono,
+            dia: diaSeleccionado,
+            hora: horaSeleccionada,
+            fecha: new Date().toISOString()
+        });
+
+        mostrarExito(nombre, horaSeleccionada);
+    }
+});
                     .then(() => {
                         database.ref('reservas_clientes').push({
                             nombre, telefono, dia: diaSeleccionado, hora: horaSeleccionada, fecha: new Date().toISOString()
