@@ -1062,16 +1062,25 @@
         let horaSeleccionada = null;
 
         // Datos iniciales/locales por si falla Firebase
-        let reservasData = {
-            lunes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
-            martes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
-            miercoles: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
-            jueves: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
-            viernes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
-            sabado: { ocupados: [], horarios: ['09:00', '10:00', '11:00', '12:00', '13:00'] },
-            domingo: { ocupados: [], horarios: [] }
-        };
+        const horariosBase = {
+    lunes:    ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'],
+    martes:   ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'],
+    miercoles:['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'],
+    jueves:   ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'],
+    viernes:  ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'],
+    sabado:   ['09:00','10:00','11:00','12:00','13:00'],
+    domingo:  []
+};
 
+let reservasData = {
+    lunes: { ocupados: [] },
+    martes: { ocupados: [] },
+    miercoles: { ocupados: [] },
+    jueves: { ocupados: [] },
+    viernes: { ocupados: [] },
+    sabado: { ocupados: [] },
+    domingo: { ocupados: [] }
+};
         // 2. CONFIGURACIÓN DE FIREBASE (Tus credenciales integradas)
         const firebaseConfig = {
             apiKey: "AIzaSyC6fT8u9u8u9u8u9u8u9u8u9u8u9u8u9u",
@@ -1118,32 +1127,36 @@
             document.getElementById('formularioReserva').style.display = 'none';
         }
 
-        function mostrarHorarios(dia, nombreDia) {
-            const container = document.getElementById('horariosContainer');
-            const grid = document.getElementById('horarios');
-            
-            grid.innerHTML = '';
-            if (reservasData[dia].horarios.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay horarios disponibles</p>';
+     function mostrarHorarios(dia, nombreDia) {
+    const container = document.getElementById('horariosContainer');
+    const grid = document.getElementById('horarios');
+
+    grid.innerHTML = '';
+
+    const horarios = horariosBase[dia];
+
+    if (!horarios || horarios.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay horarios disponibles</p>';
+    } else {
+        horarios.forEach(horario => {
+            const btn = document.createElement('button');
+            btn.className = 'horario-btn';
+
+            if (reservasData[dia].ocupados.includes(horario)) {
+                btn.classList.add('ocupado');
+                btn.textContent = horario + " (Reservado)";
+                btn.disabled = true;
             } else {
-                reservasData[dia].horarios.forEach(horario => {
-                    const btn = document.createElement('button');
-                    btn.className = 'horario-btn';
-if (reservasData[dia].ocupados.includes(horario)) {
-    btn.textContent = horario + " (Reservado)";
-} else {
-    btn.textContent = horario;
-}                    if (reservasData[dia].ocupados && reservasData[dia].ocupados.includes(horario)) {
-                        btn.classList.add('ocupado');
-                        btn.disabled = true;
-                    } else {
-                        btn.onclick = () => seleccionarHorario(horario, nombreDia);
-                    }
-                    grid.appendChild(btn);
-                });
+                btn.textContent = horario;
+                btn.onclick = () => seleccionarHorario(horario, nombreDia);
             }
-            container.style.display = 'block';
-        }
+
+            grid.appendChild(btn);
+        });
+    }
+
+    container.style.display = 'block';
+}
 
         function seleccionarHorario(horario, nombreDia) {
             document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('seleccionado'));
@@ -1162,7 +1175,9 @@ if (reservasData[dia].ocupados.includes(horario)) {
                     const data = snapshot.val();
                     diasSemana.forEach(dia => {
                         if (data[dia]) {
-                            reservasData[dia].ocupados = data[dia].ocupados || [];
+                            if (data[dia]) {
+    reservasData[dia].ocupados = data[dia].ocupados || [];
+}
                         }
                     });
                     if (diaSeleccionado) {
