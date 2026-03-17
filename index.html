@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wally Barbería - Estilo, precisión y elegancia en cada corte. Barbería profesional en Apóstoles, Misiones. Reserva tu turno online.">
+    <meta name="keywords" content="barbería Apóstoles, barbería Misiones, corte de pelo, arreglo de barba, barbería profesional">
+    <meta property="og:title" content="Wally Barbería - Apóstoles, Misiones">
+    <meta property="og:description" content="Estilo, precisión y elegancia en cada corte">
+    <meta property="og:type" content="business.business">
+    
+    <!-- Schema Local Business -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Wally Barbería",
+      "image": "https://via.placeholder.com/1200x630?text=Wally+Barberia",
+      "description": "Barbería profesional con estilo, precisión y elegancia",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Apóstoles",
+        "addressLocality": "Apóstoles",
+        "addressRegion": "Misiones",
+        "postalCode": "3370",
+        "addressCountry": "AR"
+      },
+      "telephone": "+54 (376) 123-4567",
+      "url": "https://wallybarberia.com",
+      "priceRange": "$$"
+    }
+    </script>
+
+    <title>Wally Barbería - Apóstoles, Misiones</title>
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-white: #ffffff;
+            --light-gray: #f5f5f5;
+            --medium-gray: #d0d0d0;
+            --dark-gray: #808080;
+            --accent-black: #000000;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary-black);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* NAVEGACIÓN */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--primary-black);
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--dark-gray);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--primary-black);
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-black);
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .btn-reservar-nav {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            padding: 0.7rem 1.5rem;
+            border-radius: 2px;
+            transition: var(--transition);
+            border: 2px solid var(--primary-black);
+        }
+
+        .btn-reservar-nav:hover {
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background-color: var(--primary-black);
+            transition: var(--transition);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            margin-top: 70px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(26, 26, 26, 0.5) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="1200" height="800" fill="%231a1a1a"/><rect width="1200" height="800" fill="url(%23grid)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--primary-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 0, 0, 0.3), transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.2), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            border: 2px solid var(--primary-white);
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-white);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SECCIONES GENERALES */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-black);
+            margin: 1.5rem auto 3rem;
+        }
+
+        /* SOBRE LA BARBERÍA */
+        .about {
+            background-color: var(--primary-white);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--light-gray) 0%, var(--medium-gray) 100%);
+            border-radius: 2px;
+            overflow: hidden;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* SERVICIOS */
+        .servicios {
+            background-color: var(--light-gray);
+        }
+
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .servicio-card {
+            background-color: var(--primary-white);
+            padding: 2.5rem;
+            border-radius: 2px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .servicio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .servicio-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .servicio-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .servicio-card p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .servicio-precio {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-black);
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .medios-pago {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-white);
+            border-radius: 2px;
+        }
+
+        .medios-pago h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .pago-items {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .pago-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* SISTEMA DE RESERVAS */
+        .reservas {
+            background-color: var(--primary-white);
+        }
+
+        .reservas-container {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            background-color: var(--light-gray);
+            padding: 3rem;
+            border-radius: 2px;
+        }
+
+        .calendario {
+            margin-bottom: 3rem;
+        }
+
+        .dias-semana {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .dia-btn {
+            padding: 1rem;
+            background-color: var(--primary-white);
+            border: 2px solid var(--primary-black);
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .dia-btn:hover {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+        }
+
+        .dia-btn.activo {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+        }
+
+        .horarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .horario-btn {
+            padding: 1rem;
+            background-color: var(--primary-white);
+            border: 2px solid var(--primary-black);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            border-radius: 2px;
+            text-align: center;
+        }
+
+        .horario-btn:hover:not(.ocupado):not(.seleccionado) {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+        }
+
+        .horario-btn.ocupado {
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+            cursor: not-allowed;
+            border-color: var(--medium-gray);
+        }
+
+        .horario-btn.seleccionado {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            border-color: var(--primary-black);
+        }
+
+        .formulario-reserva {
+            background-color: var(--primary-white);
+            padding: 2rem;
+            border-radius: 2px;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 2px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-black);
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+        }
+
+        .form-info {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-black);
+        }
+
+        .form-info p {
+            color: var(--dark-gray);
+            margin: 0.5rem 0;
+        }
+
+        .btn-reservar {
+            width: 100%;
+            padding: 1.2rem;
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            border: 2px solid var(--primary-black);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .btn-reservar:hover {
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+        }
+
+        .btn-reservar:disabled {
+            background-color: var(--medium-gray);
+            border-color: var(--medium-gray);
+            cursor: not-allowed;
+            color: var(--dark-gray);
+        }
+
+        .mensaje-reserva {
+            padding: 1.5rem;
+            border-radius: 2px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .mensaje-reserva.exito {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+            display: block;
+        }
+
+        .mensaje-reserva.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GALERÍA */
+        .galeria {
+            background-color: var(--light-gray);
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .galeria-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--medium-gray) 0%, var(--light-gray) 100%);
+            animation: zoomIn 0.8s ease-out;
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .galeria-item:hover img {
+            transform: scale(1.1);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* UBICACIÓN */
+        .ubicacion {
+            background-color: var(--primary-white);
+        }
+
+        .ubicacion-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+            align-items: center;
+        }
+
+        .mapa-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .ubicacion-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .ubicacion-info p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .btn-llegar {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            border: 2px solid var(--primary-black);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .btn-llegar:hover {
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+        }
+
+        /* CONTACTO */
+        .contacto {
+            background-color: var(--light-gray);
+        }
+
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contacto-item {
+            background-color: var(--primary-white);
+            padding: 2rem;
+            border-radius: 2px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        .contacto-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .contacto-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contacto-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .contacto-item p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #25D366;
+            color: var(--primary-white);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 2px;
+            transition: var(--transition);
+            border: 2px solid #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--primary-white);
+            color: #25D366;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background-color: var(--primary-white);
+            margin: 1.5rem auto;
+            opacity: 0.3;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background-color: var(--primary-white);
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.activo {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .ubicacion-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .dias-semana {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .horarios {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .reservas-container {
+                padding: 1.5rem;
+            }
+
+            .nav-menu a {
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Wally</div>
+            <ul class="nav-menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#ubicacion">Ubicación</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#reservas" class="btn-reservar-nav">Reservar</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Wally Barbería</h1>
+            <p class="hero-subtitle">Estilo, precisión y elegancia en cada corte</p>
+            <a href="#reservas" class="btn-primary">Reservar Turno</a>
+        </div>
+    </section>
+
+    <!-- SOBRE LA BARBERÍA -->
+    <section class="about" id="sobre">
+        <h2>Sobre Nosotros</h2>
+        <div class="section-divider"></div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Una Tradición de Excelencia</h3>
+                <p>En Wally Barbería, combinamos la tradición barbera con técnicas modernas. Cada corte es una obra de arte realizada por profesionales con años de experiencia.</p>
+                <p>Nos especializamos en brindar atención personalizada, escuchando tus necesidades y adaptando cada servicio a tu estilo personal. Nuestro compromiso es que salgas de aquí sintiéndote confiado y renovado.</p>
+                <p>Con un ambiente elegante y minimalista, Wally Barbería es el lugar perfecto para relajarse mientras recibes el mejor servicio de barbería en Apóstoles.</p>
+            </div>
+            <div class="about-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%23d0d0d0' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23808080'%3EImagen de la Barbería%3C/text%3E%3C/svg%3E" alt="Wally Barbería">
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS Y PRECIOS -->
+    <section class="servicios" id="servicios">
+        <h2>Nuestros Servicios</h2>
+        <div class="section-divider"></div>
+        <div class="servicios-grid">
+            <div class="servicio-card">
+                <div class="servicio-icon">✂️</div>
+                <h3>Corte de Cabello</h3>
+                <p>Cortes precisos y modernos adaptados a tu estilo personal. Técnica profesional con atención al detalle.</p>
+                <div class="servicio-precio">$500</div>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">🧔</div>
+                <h3>Arreglo de Barba</h3>
+                <p>Perfilado y arreglo de barba con productos premium. Acabado impecable y cuidado profesional.</p>
+                <div class="servicio-precio">$400</div>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">✨</div>
+                <h3>Corte + Barba</h3>
+                <p>Combo completo: corte de cabello y arreglo de barba. Transformación total con estilo.</p>
+                <div class="servicio-precio">$800</div>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">💇</div>
+                <h3>Otros Servicios</h3>
+                <p>Lavado, masaje capilar, tratamientos especiales y más. Consulta disponibilidad.</p>
+                <div class="servicio-precio">Consultar</div>
+            </div>
+        </div>
+
+        <div class="medios-pago">
+            <h3>Medios de Pago Aceptados</h3>
+            <div class="pago-items">
+                <div class="pago-item">💵 Efectivo</div>
+                <div class="pago-item">💳 Tarjetas de Crédito/Débito</div>
+                <div class="pago-item">🏦 Transferencia Bancaria</div>
+            </div>
+            <p style="margin-top: 1.5rem; color: var(--dark-gray); font-size: 0.95rem;">El pago se realiza presencialmente en la barbería al finalizar el servicio.</p>
+        </div>
+    </section>
+
+    <!-- SISTEMA DE RESERVAS -->
+    <section class="reservas" id="reservas">
+        <h2>Reserva Tu Turno</h2>
+        <div class="section-divider"></div>
+        <div class="reservas-container">
+            <div class="calendario">
+                <h3 style="margin-bottom: 1.5rem; text-align: center; font-size: 1.2rem;">Selecciona un día</h3>
+                <div class="dias-semana" id="diasSemana"></div>
+            </div>
+
+            <div class="horarios-container" id="horariosContainer" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem; text-align: center; font-size: 1.2rem;">Horarios disponibles</h3>
+                <div class="horarios" id="horarios"></div>
+            </div>
+
+            <div class="formulario-reserva" id="formularioReserva" style="display: none;">
+                <div class="form-info">
+                    <p><strong>Día seleccionado:</strong> <span id="diaSeleccionado">-</span></p>
+                    <p><strong>Hora seleccionada:</strong> <span id="horaSeleccionada">-</span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Tu nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="Tu teléfono" required>
+                </div>
+
+                <button class="btn-reservar" id="btnReservar">Confirmar Reserva</button>
+                <div class="mensaje-reserva" id="mensajeReserva"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="galeria" id="galeria">
+        <h2>Galería</h2>
+        <div class="section-divider"></div>
+        <div class="galeria-grid">
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 1%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 2%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 3%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 4%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 5%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+            <div class="galeria-item">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23d0d0d0' width='300' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23808080'%3EGalería 6%3C/text%3E%3C/svg%3E" alt="Galería">
+            </div>
+        </div>
+    </section>
+
+    <!-- UBICACIÓN -->
+    <section class="ubicacion" id="ubicacion">
+        <h2>Ubicación</h2>
+        <div class="section-divider"></div>
+        <div class="ubicacion-content">
+            <div class="mapa-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3575.8234567890123!2d-55.61234567890123!3d-25.8234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94f7c1234567890%3A0x1234567890abcdef!2sAp%C3%B3stoles%2C%20Misiones!5e0!3m2!1ses!2sar!4v1234567890123" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="ubicacion-info">
+                <h3>Visítanos</h3>
+                <p><strong>Dirección:</strong><br>Apóstoles, Misiones, Argentina</p>
+                <p><strong>Horarios:</strong><br>Lunes a Viernes: 10:00 - 19:00<br>Sábado: 09:00 - 14:00<br>Domingo: Cerrado</p>
+                <p><strong>Teléfono:</strong><br>+54 (376) 123-4567</p>
+                <a href="https://www.google.com/maps/search/Ap%C3%B3stoles+Misiones" target="_blank" class="btn-llegar">Cómo Llegar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="contacto" id="contacto">
+        <h2>Contacto</h2>
+        <div class="section-divider"></div>
+        <div class="contacto-grid">
+            <div class="contacto-item">
+                <div class="contacto-icon">📞</div>
+                <h3>Teléfono</h3>
+                <p>+54 (376) 123-4567</p>
+                <a href="tel:+543761234567" class="btn-llegar">Llamar</a>
+            </div>
+            <div class="contacto-item">
+                <div class="contacto-icon">💬</div>
+                <h3>WhatsApp</h3>
+                <p>Envía un mensaje directo</p>
+                <a href="https://wa.me/543761234567?text=Hola%2C%20me%20interesa%20reservar%20un%20turno%20en%20Wally%20Barber%C3%ADa" target="_blank" class="btn-whatsapp">Enviar Mensaje</a>
+            </div>
+            <div class="contacto-item">
+                <div class="contacto-icon">📍</div>
+                <h3>Ubicación</h3>
+                <p>Apóstoles, Misiones, Argentina</p>
+                <a href="https://www.google.com/maps/search/Ap%C3%B3stoles+Misiones" target="_blank" class="btn-llegar">Ver Mapa</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Wally Barbería. Todos los derechos reservados.</p>
+        <div class="footer-divider"></div>
+        <p>Apóstoles, Misiones, Argentina</p>
+        <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">Diseño profesional y elegante para tu barbería</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // SISTEMA DE RESERVAS DEFINITIVO (FIREBASE COMPAT)
+        // ============================================
+
+        // 1. VARIABLES GLOBALES (Definidas primero para evitar errores de inicialización)
+        const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        const diasNombres = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        let diaSeleccionado = null;
+        let horaSeleccionada = null;
+
+        // Datos iniciales/locales por si falla Firebase
+        let reservasData = {
+            lunes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
+            martes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
+            miercoles: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
+            jueves: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
+            viernes: { ocupados: [], horarios: ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'] },
+            sabado: { ocupados: [], horarios: ['09:00', '10:00', '11:00', '12:00', '13:00'] },
+            domingo: { ocupados: [], horarios: [] }
+        };
+
+        // 2. CONFIGURACIÓN DE FIREBASE (Tus credenciales integradas)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC6fT8u9u8u9u8u9u8u9u8u9u8u9u8u9u",
+            authDomain: "wally-barberia-5798e.firebaseapp.com",
+            databaseURL: "https://wally-barberia-5798e-default-rtdb.firebaseio.com",
+            projectId: "wally-barberia-5798e",
+            storageBucket: "wally-barberia-5798e.appspot.com",
+            messagingSenderId: "423391623197",
+            appId: "1:423391623197:web:2f20f0f68156c3e24feef4",
+            measurementId: "G-EKWEE92M8J"
+        };
+
+        // 3. INICIALIZACIÓN
+        let database = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log("Firebase inicializado correctamente");
+        } catch (e) {
+            console.error("Error al inicializar Firebase:", e);
+        }
+
+        // 4. FUNCIONES DEL CALENDARIO
+        function inicializarCalendario() {
+            const diasContainer = document.getElementById('diasSemana');
+            if (!diasContainer) return;
+            
+            diasContainer.innerHTML = '';
+            diasSemana.forEach((dia, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'dia-btn';
+                btn.textContent = diasNombres[index];
+                btn.onclick = () => seleccionarDia(dia, diasNombres[index], btn);
+                diasContainer.appendChild(btn);
+            });
+        }
+
+        function seleccionarDia(dia, nombreDia, btnElement) {
+            document.querySelectorAll('.dia-btn').forEach(btn => btn.classList.remove('activo'));
+            btnElement.classList.add('activo');
+            diaSeleccionado = dia;
+            horaSeleccionada = null;
+            mostrarHorarios(dia, nombreDia);
+            document.getElementById('formularioReserva').style.display = 'none';
+        }
+
+        function mostrarHorarios(dia, nombreDia) {
+            const container = document.getElementById('horariosContainer');
+            const grid = document.getElementById('horarios');
+            
+            grid.innerHTML = '';
+            if (reservasData[dia].horarios.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay horarios disponibles</p>';
+            } else {
+                reservasData[dia].horarios.forEach(horario => {
+                    const btn = document.createElement('button');
+                    btn.className = 'horario-btn';
+                    btn.textContent = horario;
+                    if (reservasData[dia].ocupados && reservasData[dia].ocupados.includes(horario)) {
+                        btn.classList.add('ocupado');
+                        btn.disabled = true;
+                    } else {
+                        btn.onclick = () => seleccionarHorario(horario, nombreDia);
+                    }
+                    grid.appendChild(btn);
+                });
+            }
+            container.style.display = 'block';
+        }
+
+        function seleccionarHorario(horario, nombreDia) {
+            document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('seleccionado'));
+            event.target.classList.add('seleccionado');
+            horaSeleccionada = horario;
+            document.getElementById('diaSeleccionado').textContent = nombreDia;
+            document.getElementById('horaSeleccionada').textContent = horario;
+            document.getElementById('formularioReserva').style.display = 'block';
+            document.getElementById('formularioReserva').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 5. CARGAR DATOS DE FIREBASE
+        if (database) {
+            database.ref('reservas').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    diasSemana.forEach(dia => {
+                        if (data[dia]) {
+                            reservasData[dia].ocupados = data[dia].ocupados || [];
+                        }
+                    });
+                    if (diaSeleccionado) {
+                        mostrarHorarios(diaSeleccionado, diasNombres[diasSemana.indexOf(diaSeleccionado)]);
+                    }
+                } else {
+                    // Inicializar base de datos si está vacía
+                    database.ref('reservas').set(reservasData);
+                }
+            });
+        }
+
+        // 6. EVENTOS
+        document.getElementById('btnReservar').addEventListener('click', function() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const msg = document.getElementById('mensajeReserva');
+
+            if (!nombre || !telefono) {
+                msg.className = 'mensaje-reserva error';
+                msg.textContent = '⚠️ Completa todos los campos';
+                msg.style.display = 'block';
+                return;
+            }
+
+            if (database) {
+                const nuevosOcupados = [...(reservasData[diaSeleccionado].ocupados || []), horaSeleccionada];
+                database.ref(`reservas/${diaSeleccionado}/ocupados`).set(nuevosOcupados)
+                    .then(() => {
+                        database.ref('reservas_clientes').push({
+                            nombre, telefono, dia: diaSeleccionado, hora: horaSeleccionada, fecha: new Date().toISOString()
+                        });
+                        mostrarExito(nombre, horaSeleccionada);
+                    })
+                    .catch(err => {
+                        console.error("Error al reservar:", err);
+                        msg.className = 'mensaje-reserva error';
+                        msg.textContent = '❌ Error de conexión con Firebase';
+                        msg.style.display = 'block';
+                    });
+            } else {
+                // Modo local
+                reservasData[diaSeleccionado].ocupados.push(horaSeleccionada);
+                mostrarExito(nombre, horaSeleccionada);
+            }
+        });
+
+        function mostrarExito(nombre, hora) {
+            const msg = document.getElementById('mensajeReserva');
+            msg.className = 'mensaje-reserva exito';
+            msg.innerHTML = `✅ ¡Reserva confirmada para ${nombre} a las ${hora}!`;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        }
+
+        // Menú móvil
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.querySelector('.nav-menu').classList.toggle('activo');
+        });
+
+        // 7. INICIO
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarCalendario();
+        });
+    </script>
+</body>
+</html>
